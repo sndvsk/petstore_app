@@ -1,0 +1,18 @@
+<h1>Pets</h1>
+
+<% if user_signed_in? %>
+    <%= link_to 'New Pet', new_pet_path, class: 'btn btn-primary' %>
+<% end %>
+
+<ul>
+  <% @pets.each do |pet| %>
+    <li>
+      <%= pet.name %> (Type: <%= pet.pet_type %>, Age: <%= pet.age %>)
+      <%= link_to 'Show', pet, class: 'btn btn-light' %>
+      <% if user_signed_in? %>
+        <%= link_to 'Edit', edit_pet_path(pet), class: 'btn btn-light' %>
+        <%= link_to 'Delete', pet, method: :delete, data: { confirm: 'Are you sure?', turbo: false }, class: 'btn btn-danger' %>
+    <% end %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,41 @@
+version: '3'
+services:
+#  db:
+#    image: postgres:15
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: petstore_development
+#      POSTGRES_USER: ${POSTGRES_USERNAME}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#    ports:
+#      - "5432:5432"
+
+  mongodb:
+    image: mongo:7.0
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: petstore_development
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"
+
+  petstore_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      RAILS_SERVE_STATIC_FILES: 'true'
+    volumes:
+      - .:/rails
+    depends_on:
+      - mongodb
+
+volumes:
+  postgres_data:
+  mongodb_data:
